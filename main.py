@@ -33,7 +33,28 @@ class attacks():
         pass
     
     def message_remover(token):
-        pass
+        headers = {
+            "authorization": token
+        }
+        channels = requests.get("https://discord.com/api/v10/users/@me/channels", headers=headers).json()
+        try:
+            for channel in channels:
+                x = requests.get("https://discord.com/api/v10/channels/{}/messages?limit=100".format(channel["id"]), headers=headers)
+                for data in x.json():
+                    loop = True
+                    while loop:
+                        if data["author"]["username"] == "Snikker":
+                            x = requests.delete("https://discord.com/api/v10/channels/{}/messages/{}".format(channel["id"], data["id"]), headers=headers)
+                            if x.status_code != 429:
+                                print("[*] Message deleted [CONTENT: {}] [ID: {}]".format(data["content"], data["id"]))
+                                loop = False
+                            else:
+                                time.sleep(1)
+                                loop = True
+                        else:
+                            loop = False
+        except:
+            break
 
 os.system("cls")
 
@@ -54,7 +75,7 @@ def main():
     print("[3] Message remover")
 
     time.sleep(1)
-    attack = int(input("[?] Select attack: "))
+    attack = int(input("\n[?] Select attack: "))
 
     if attack == 1:
         os.system("cls")
