@@ -37,8 +37,8 @@ class attacks():
             "authorization": token
         }
         channels = requests.get("https://discord.com/api/v10/users/@me/channels", headers=headers).json()
-        try:
-            for channel in channels:
+        for channel in channels:
+            try:
                 x = requests.get("https://discord.com/api/v10/channels/{}/messages?limit=100".format(channel["id"]), headers=headers)
                 for data in x.json():
                     loop = True
@@ -53,8 +53,8 @@ class attacks():
                                 loop = True
                         else:
                             loop = False
-        except:
-            break
+            except:
+                break
 
 os.system("cls")
 
